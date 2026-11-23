@@ -2,52 +2,33 @@
 #Systeme de gestion d'inventaire
 #Structure de donnees
 produits ={}
-historique ={}
-#Menu principal
-while True:
-    print("\n===== STOCKMANAGER =====")
-    print("1. Ajouter un produit")
-    print("2. Supprimer un produit")
-    print("3. Rechercher un produit")
-    print("4. Modifier un produit")
-    print("5. Afficher l'inventaire")
-    print("6. Verifier le stock")
-    print("7. Calculer la valeur totale")
-    print("8. Consulter l'historique")
-    print("9. Quitter")
+historique =[]
 
-    choix = input("Votre choix : ")
+# FONCTION : AJOUTER UN PRODUIT
+def ajouter_produit():
+    print("\n--- AJOUTER UN PRODUIT ---")
 
-    if choix == "1":
-        print("Ajouter un produit")
+    identifiant = int(input("Identifiant : "))
 
-    elif choix == "2":
-        print("Supprimer un produit")
+    if identifiant in produits:
+        print("Cet identifiant existe deja.")
+        return
 
-    elif choix == "3":
-        print("Rechercher un produit")
+    nom = input("Nom du produit : ")
+    prix = float(input("Prix du produit : "))
+    quantite = int(input("Quantite en stock : "))
+    categorie = input("Categorie : ")
 
-    elif choix == "4":
-        print("Modifier un produit")
+    produits[identifiant] = {
+        "nom": nom,
+        "prix": prix,
+        "quantite": quantite,
+        "categorie": categorie
+    }
 
-    elif choix == "5":
-        print("Afficher l'inventaire")
+    historique.append([identifiant, "Entree", quantite])
 
-    elif choix == "6":
-        print("Verifier le stock")
-
-    elif choix == "7":
-        print("Calculer la valeur totale")
-
-    elif choix == "8":
-        print("Consulter l'historique")
-
-    elif choix == "9":
-        print("Fermeture de StockManager.")
-        break
-
-    else:
-        print("Choix invalide.")
+    print("Produit ajoute avec succes !")
 
 
 # FONCTION : AFFICHER L'INVENTAIRE
@@ -68,28 +49,152 @@ def afficher_inventaire():
 
     print("\nInventaire affiche avec succes !")
 
-    # FONCTION : AJOUTER UN PRODUIT
-    def ajouter_produit():
-        print("\n--- AJOUTER UN PRODUIT ---")
+# FONCTION : SUPPRIMER UN PRODUIT
+def supprimer_produit():
+    print("\n--- SUPPRIMER UN PRODUIT ---")
 
-        identifiant = int(input("Identifiant : "))
+    identifiant = int(input("Entrez l'identifiant du produit : "))
 
-        if identifiant in produits:
-            print("Cet identifiant existe deja.")
-            return
+    if identifiant in produits:
+        nom = produits[identifiant]["nom"]
 
-        nom = input("Nom du produit : ")
-        prix = float(input("Prix du produit : "))
-        quantite = int(input("Quantite en stock : "))
-        categorie = input("Categorie : ")
+        del produits[identifiant]
 
-        produits[identifiant] = {
-            "nom": nom,
-            "prix": prix,
-            "quantite": quantite,
-            "categorie": categorie
-        }
+        print("Le produit", nom, "a ete supprime avec succes !")
 
-        historique.append([identifiant, "Entree", quantite])
+    else:
+        print("Aucun produit trouve avec cet identifiant.")
 
-        print("Produit ajoute avec succes !")
+# FONCTION : RECHERCHER UN PRODUIT
+def rechercher_produit():
+    print("\n--- RECHERCHER UN PRODUIT ---")
+
+    identifiant = int(input("Entrez l'identifiant du produit : "))
+
+    if identifiant in produits:
+        informations = produits[identifiant]
+
+        print("\nProduit trouve !")
+        print("Identifiant :", identifiant)
+        print("Nom :", informations["nom"])
+        print("Prix :", informations["prix"], "$")
+        print("Quantite :", informations["quantite"])
+        print("Categorie :", informations["categorie"])
+
+    else:
+        print("Aucun produit trouve avec cet identifiant.")
+
+# FONCTION : MODIFIER UN PRODUIT
+def modifier_produit():
+    print("\n--- MODIFIER UN PRODUIT ---")
+
+    identifiant = int(input("Entrez l'identifiant du produit : "))
+
+    if identifiant in produits:
+        print("1. Modifier le prix")
+        print("2. Modifier la quantite")
+
+        choix = input("Votre choix : ")
+
+        if choix == "1":
+            nouveau_prix = float(input("Nouveau prix : "))
+            produits[identifiant]["prix"] = nouveau_prix
+            print("Prix modifie avec succes !")
+
+        elif choix == "2":
+            nouvelle_quantite = int(input("Nouvelle quantite : "))
+            produits[identifiant]["quantite"] = nouvelle_quantite
+            print("Quantite modifiee avec succes !")
+
+        else:
+            print("Choix invalide.")
+
+    else:
+        print("Aucun produit trouve avec cet identifiant.")
+
+# FONCTION : VERIFIER LE STOCK
+def verifier_stock():
+    print("\n--- VERIFICATION DU STOCK ---")
+
+    if len(produits) == 0:
+        print("L'inventaire est vide.")
+        return
+
+    stock_faible = False
+
+    for identifiant, informations in produits.items():
+
+        if informations["quantite"] <= 5:
+            print("\nStock faible !")
+            print("Identifiant :", identifiant)
+            print("Nom :", informations["nom"])
+            print("Quantite restante :", informations["quantite"])
+
+            stock_faible = True
+
+    if stock_faible == False:
+        print("Aucun produit en stock faible.")
+
+# FONCTION : CALCULER LA VALEUR TOTALE
+def calculer_valeur_totale():
+    print("\n--- VALEUR TOTALE DE L'INVENTAIRE ---")
+
+    valeur_totale = 0
+
+    if len(produits) == 0:
+        print("L'inventaire est vide.")
+        return
+
+    for identifiant, informations in produits.items():
+        valeur = informations["prix"] * informations["quantite"]
+        valeur_totale = valeur_totale + valeur
+
+    print("Valeur totale de l'inventaire :", round(valeur_totale, 2), "$")
+
+#Menu principal
+while True:
+    print("\n===== STOCKMANAGER =====")
+    print("1. Ajouter un produit")
+    print("2. Supprimer un produit")
+    print("3. Rechercher un produit")
+    print("4. Modifier un produit")
+    print("5. Afficher l'inventaire")
+    print("6. Verifier le stock")
+    print("7. Calculer la valeur totale")
+    print("8. Consulter l'historique")
+    print("9. Quitter")
+
+    choix = input("Votre choix : ")
+
+    if choix == "1":
+        ajouter_produit()
+
+    elif choix == "2":
+        supprimer_produit()
+
+    elif choix == "3":
+        rechercher_produit()
+
+    elif choix == "4":
+        modifier_produit()
+
+    elif choix == "5":
+        afficher_inventaire()
+
+    elif choix == "6":
+        verifier_stock()
+
+    elif choix == "7":
+        calculer_valeur_totale()
+
+    elif choix == "8":
+        print("Consulter l'historique")
+
+    elif choix == "9":
+        print("Fermeture de StockManager.")
+        break
+
+    else:
+        print("Choix invalide.")
+
+
