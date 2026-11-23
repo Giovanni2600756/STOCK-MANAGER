@@ -151,50 +151,68 @@ def calculer_valeur_totale():
 
     print("Valeur totale de l'inventaire :", round(valeur_totale, 2), "$")
 
+# FONCTION : AFFICHER L'HISTORIQUE
+def afficher_historique():
+    print("\n--- HISTORIQUE DES MOUVEMENTS ---")
+
+    if len(historique) == 0:
+        print("Aucun mouvement enregistre.")
+        return
+
+    for mouvement in historique:
+        print("-------------------------")
+        print("Identifiant :", mouvement[0])
+        print("Type de mouvement :", mouvement[1])
+        print("Quantite :", mouvement[2])
+
+    print("\nHistorique affiche avec succes !")
+
 #Menu principal
-while True:
-    print("\n===== STOCKMANAGER =====")
-    print("1. Ajouter un produit")
-    print("2. Supprimer un produit")
-    print("3. Rechercher un produit")
-    print("4. Modifier un produit")
-    print("5. Afficher l'inventaire")
-    print("6. Verifier le stock")
-    print("7. Calculer la valeur totale")
-    print("8. Consulter l'historique")
-    print("9. Quitter")
+if __name__=="__main__":
+    while True :
 
-    choix = input("Votre choix : ")
+     print("\n===== STOCKMANAGER =====")
+     print("1. Ajouter un produit")
+     print("2. Supprimer un produit")
+     print("3. Rechercher un produit")
+     print("4. Modifier un produit")
+     print("5. Afficher l'inventaire")
+     print("6. Verifier le stock")
+     print("7. Calculer la valeur totale")
+     print("8. Consulter l'historique")
+     print("9. Quitter")
 
-    if choix == "1":
+     choix = input("Votre choix : ")
+
+     if choix == "1":
         ajouter_produit()
 
-    elif choix == "2":
+     elif choix == "2":
         supprimer_produit()
 
-    elif choix == "3":
+     elif choix == "3":
         rechercher_produit()
 
-    elif choix == "4":
+     elif choix == "4":
         modifier_produit()
 
-    elif choix == "5":
+     elif choix == "5":
         afficher_inventaire()
 
-    elif choix == "6":
+     elif choix == "6":
         verifier_stock()
 
-    elif choix == "7":
+     elif choix == "7":
         calculer_valeur_totale()
 
-    elif choix == "8":
-        print("Consulter l'historique")
+     elif choix == "8":
+        afficher_historique()
 
-    elif choix == "9":
+     elif choix == "9":
         print("Fermeture de StockManager.")
         break
 
-    else:
+     else:
         print("Choix invalide.")
 
 
